@@ -97,7 +97,7 @@
         //definition expression to filter out excess data
         //definitionExpression: "",
         //adding the popup information to the layer information
-        outFields: ["Name","Location"],
+        outFields: ["Name","Country"],
         renderer: worldUniversitiesRenderer,
         popupTemplate: popupWorldUniversities
       });
@@ -152,7 +152,7 @@
           haloColor: [250,248,240,1],
           haloSize: "3px",
           font: {
-            size: "12px",
+            size: "18px",
             family: "Noto Sans",
             style: "italic",
             weight: "normal"
@@ -167,7 +167,8 @@
       //adding the constructor for the feature layer: world airports
       const worldAirports = new FeatureLayer({
         url: "https://services2.arcgis.com/jUpNdisbWqRpMo35/arcgis/rest/services/Airports28062017/FeatureServer",
-        outFields: ["airport_ident","type","name","latitude_deg","longitude_deg","elevation_ft","continent","iso_country","iso_region","municipality","gps_code","local_code"],
+        definitionExpression: "type = 'large_airport' OR type = 'heliport'",
+        outFields: ["airport_ident","type","name"],
         renderer: airportRenderer,
         labelingInfo: [airportLabels]
       });
