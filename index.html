@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>AGOL Web Map with Editing</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="UW-Madison Geog 576 Lab 3" />
+
+  
+  <!-- callls for the arcgis api's CSS file and JS library -->
+  <link rel="stylesheet" href="https://js.arcgis.com/4.25/esri/themes/light/main.css">
+  <script src="https://js.arcgis.com/4.25/"></script>
+  
+  <!-- adding the modules needed for a full screen map app -->
+  <script>  
+    require([
+      "esri/config", 
+      "esri/Map", 
+      "esri/views/MapView", 
+      "esri/widgets/BasemapGallery", 
+      "esri/widgets/Expand", 
+      "esri/widgets/Search", 
+      "esri/widgets/Locate",
+      //adding in the modules for graphics and graphic layer
+      "esri/Graphic",
+      "esri/layers/GraphicsLayer",
+      //adding in the modules for the feature layers
+      "esri/layers/FeatureLayer"
+      ], 
+      function(esriConfig, Map, MapView, BasemapGallery, Expand, Search, Locate, Graphic, GraphicsLayer, FeatureLayer) { 
+      esriConfig.apiKey = "AAPK9c2d1c71e0c54fea8c41854d79e2bb2aRY4BboQbjkrg1gzIR4byHHAPQAnvnqnY0kwBUXQfbQGvJjGbV3it18SqxWbjCtON";
+      const map = new Map({
+        basemap: "arcgis-colored-pencil" // Basemap layer service 
+      });
+
+      const view = new MapView({
+        map: map,
+        center: [11.582689410901967, 48.13059749072203], // Longitude, latitude 
+        zoom: 10, // Zoom level
+        container: "viewDiv" // Div element
+      });
+
+      // Moves the default zoom widget to the rop right corner of the view's container
+      view.ui.move("zoom", "top-right");
+
+      let basemapGallery = new BasemapGallery({
+        view: view
+      });
+
+      basemapGalleryExpand = new Expand({
+        expandIcon: "basemap", //https://developers.arcgis.com/calcite-design-system/icons/
+        view: view,
+        content: basemapGallery
+      });
+      view.ui.add(basemapGalleryExpand, "top-right");
+
+      const searchWidget = new Search({
+        view: view
+      });
+      
+      // Adds the search widget
+      view.ui.add(searchWidget, {
+        position: "top-left",
+      });
+
+      let locateWidget = new Locate({
+        view: view,   // Attaches the Locate button to the view
+        /*graphic: new Graphic({
+          symbol: { type: "simple-marker" }  // overwrites the default symbol used for the
+          // graphic placed at the location of the user when found
+        })*/
+      });
+
+      view.ui.add(locateWidget, "top-left");
+
+      //constructor to make renderer for world universities
+      const worldUniversitiesRenderer = {
+        type: "picture-marker", //autocasts as new PictureMarkerSymbol()
+        url: "https://steslowj.github.io/geog576_lab3/books.png",
+        width: "14px",
+        height: "14px"
+      };
+
+      
+      //define a popup for world universities
+      const popupWorldUniversities = {
+        "title": "<b>Name:</b> {Name}",
+      };
+
+      //adding the constructor for the feature layer: World Universities
+      //this feature layer is made of World University Rankings 2018
+      //much of the data is around education metrics from 2018 and I only want the names and locations
+      const worldUniversities = new FeatureLayer({
+        url: "https://services.arcgis.com/nGt4QxSblgDfeJn9/arcgis/rest/services/WorldUniversityRankings2018/FeatureServer",
+        //definition expression to filter out excess data
+        //definitionExpression: "",
+        //adding the popup information to the layer information
+        outFields: ["Name","Location"],
+        renderer: worldUniversitiesRenderer,
+        popupTemplate: popupWorldUniversities
+      });
+      
+      map.add(worldUniversities);
+
+      //constructor to make renderer for venice points, using unique value for the 2 types of points
+      const airportRenderer = {
+        type: "unique-value", //autocasts as new UniqueValueRenderer()
+        field: "type",
+        defaultSymbol: {type: "simple-fill"},
+        uniqueValueInfos: [{
+          value: "large_airport",
+          symbol: {
+            type: "picture-marker",
+            url: "https://steslowj.github.io/geog576_lab3/airplane.png",
+            width: "18px",
+            height: "18px"
+          }
+        }, {
+          value: "medium_airport",
+          symbol: {
+            type: "picture-marker",
+            url: "https://steslowj.github.io/geog576_lab3/airplane.png",
+            width: "14px",
+            height: "14px"
+          }
+        }, {
+          value: "small_airport",
+          symbol: {
+            type: "picture-marker",
+            url: "https://steslowj.github.io/geog576_lab3/airplane.png",
+            width: "12px",
+            height: "12px"
+          }
+        }, {
+          value: "heliport",
+          symbol: {
+            type: "picture-marker",
+            url: "https://steslowj.github.io/geog576_lab3/helicopter.png",
+            width: "14px",
+            height: "14px"
+          }
+        }]
+      }
+
+      //const to make labels for venice points
+      const airportLabels = {
+        symbol: {
+          type: "text",
+          color: [70,70,70,1],
+          haloColor: [250,248,240,1],
+          haloSize: "3px",
+          font: {
+            size: "12px",
+            family: "Noto Sans",
+            style: "italic",
+            weight: "normal"
+          }
+        },
+        labelPlacement: "above-center",
+        labelExpressionInfo: {
+          expression: "$feature.name"
+        }
+      };
+
+      //adding the constructor for the feature layer: world airports
+      const worldAirports = new FeatureLayer({
+        url: "https://services2.arcgis.com/jUpNdisbWqRpMo35/arcgis/rest/services/Airports28062017/FeatureServer",
+        outFields: ["airport_ident","type","name","latitude_deg","longitude_deg","elevation_ft","continent","iso_country","iso_region","municipality","gps_code","local_code"],
+        renderer: airportRenderer,
+        labelingInfo: [airportLabels]
+      });
+
+      map.add(worldAirports);
+
+    });
+
+
+  </script>
+
+  <!-- CSS to make a full screen map -->
+  <style> html, body, #viewDiv {  padding: 0;  margin: 0;  height: 100%;  width: 100%;  } </style>
+  
+</head>
+<body>
+  <!-- the div to display the map -->
+  <div id="viewDiv"></div> 
+
+</body>
+</html>
