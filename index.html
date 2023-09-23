@@ -85,8 +85,8 @@
         symbol: {
           type: "picture-marker", //autocasts as new PictureMarkerSymbol()
           url: "https://steslowj.github.io/geog576_lab3/graduation-cap.png",
-          width: "32px",
-          height: "32px"
+          width: "24px",
+          height: "24px"
         }
       };
       
@@ -127,7 +127,7 @@
           value: "medium_airport",
           symbol: {
             type: "picture-marker",
-            url: "https://steslowj.github.io/geog576_lab3/plane-solid.png",
+            url: "https://steslowj.github.io/geog576_lab3/plane-solid-darker.png",
             width: "24px",
             height: "24px"
           }
@@ -172,10 +172,21 @@
 
       map.add(worldAirports);
 
+      const myAirportRenderer = {
+        type: "simple",
+        symbol: {
+          type: "picture-marker", //autocasts as new PictureMarkerSymbol()
+          url: "https://steslowj.github.io/geog576_lab3/plane-departure.png",
+          width: "32px",
+          height: "32px"
+        }
+      };
+
       //adding the const for the feature layer
       const myAirports = new FeatureLayer({
         url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/Airports/FeatureServer",
-        outFields: ["AirportCode"]
+        outFields: ["AirportCode"],
+        renderer: myAirportRenderer
       });
 
       map.add(myAirports);
