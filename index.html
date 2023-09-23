@@ -125,22 +125,6 @@
             width: "24px",
             height: "24px"
           }
-        }, {
-          value: "small_airport",
-          symbol: {
-            type: "picture-marker",
-            url: "https://steslowj.github.io/geog576_lab3/airplane.png",
-            width: "20px",
-            height: "20px"
-          }
-        }, {
-          value: "heliport",
-          symbol: {
-            type: "picture-marker",
-            url: "https://steslowj.github.io/geog576_lab3/helicopter.png",
-            width: "24px",
-            height: "24px"
-          }
         }]
       }
 
@@ -152,7 +136,7 @@
           haloColor: [250,248,240,1],
           haloSize: "3px",
           font: {
-            size: "18px",
+            size: "12px",
             family: "Noto Sans",
             style: "italic",
             weight: "normal"
@@ -167,7 +151,7 @@
       //adding the constructor for the feature layer: world airports
       const worldAirports = new FeatureLayer({
         url: "https://services2.arcgis.com/jUpNdisbWqRpMo35/arcgis/rest/services/Airports28062017/FeatureServer",
-        definitionExpression: "type = 'large_airport' OR type = 'heliport'",
+        definitionExpression: "type = 'large_airport' OR type = 'medium_airport'",
         outFields: ["airport_ident","type","name"],
         renderer: airportRenderer,
         labelingInfo: [airportLabels]
