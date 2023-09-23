@@ -30,7 +30,7 @@
       function(esriConfig, Map, MapView, BasemapGallery, Expand, Search, Locate, Graphic, GraphicsLayer, FeatureLayer) { 
       esriConfig.apiKey = "AAPK9c2d1c71e0c54fea8c41854d79e2bb2aRY4BboQbjkrg1gzIR4byHHAPQAnvnqnY0kwBUXQfbQGvJjGbV3it18SqxWbjCtON";
       const map = new Map({
-        basemap: "arcgis-colored-pencil" // Basemap layer service 
+        basemap: "arcgis-newspaper" // Basemap layer service 
       });
 
       const view = new MapView({
@@ -78,9 +78,9 @@
         type: "simple",
         symbol: {
           type: "picture-marker", //autocasts as new PictureMarkerSymbol()
-          url: "https://steslowj.github.io/geog576_lab3/lightbulb.png",
-          width: "40px",
-          height: "40px"
+          url: "https://steslowj.github.io/geog576_lab3/tea.png",
+          width: "50px",
+          height: "50px"
         }
       };
       
@@ -114,16 +114,16 @@
           symbol: {
             type: "picture-marker",
             url: "https://steslowj.github.io/geog576_lab3/aircraft.png",
-            width: "40px",
-            height: "40px"
+            width: "50px",
+            height: "50px"
           }
         }, {
           value: "medium_airport",
           symbol: {
             type: "picture-marker",
             url: "https://steslowj.github.io/geog576_lab3/aircraft.png",
-            width: "32px",
-            height: "32px"
+            width: "40px",
+            height: "40px"
           }
         }]
       }
