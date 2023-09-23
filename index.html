@@ -29,9 +29,11 @@
       "esri/Graphic",
       "esri/layers/GraphicsLayer",
       //adding in the modules for the feature layers
-      "esri/layers/FeatureLayer"
+      "esri/layers/FeatureLayer",
+      //adding in the module for editing
+      "esri/widgets/Editor"
       ], 
-      function(esriConfig, Map, MapView, BasemapGallery, Expand, Search, Locate, Graphic, GraphicsLayer, FeatureLayer) { 
+      function(esriConfig, Map, MapView, BasemapGallery, Expand, Search, Locate, Graphic, GraphicsLayer, FeatureLayer, Editor) { 
       esriConfig.apiKey = "AAPK9c2d1c71e0c54fea8c41854d79e2bb2aRY4BboQbjkrg1gzIR4byHHAPQAnvnqnY0kwBUXQfbQGvJjGbV3it18SqxWbjCtON";
       const map = new Map({
         basemap: "arcgis-newspaper" // Basemap layer service 
@@ -82,15 +84,15 @@
         type: "simple",
         symbol: {
           type: "picture-marker", //autocasts as new PictureMarkerSymbol()
-          url: "https://steslowj.github.io/geog576_lab3/tea.png",
-          width: "40px",
-          height: "40px"
+          url: "https://steslowj.github.io/geog576_lab3/graduation-cap.png",
+          width: "32px",
+          height: "32px"
         }
       };
       
       //define a popup for world universities
       const popupWorldUniversities = {
-        "title": "<b>Name:</b> {Name}",
+        "title": "{Name}",
       };
 
       //adding the constructor for the feature layer: World Universities
@@ -117,17 +119,17 @@
           value: "large_airport",
           symbol: {
             type: "picture-marker",
-            url: "https://steslowj.github.io/geog576_lab3/aircraft.png",
-            width: "40px",
-            height: "40px"
+            url: "https://steslowj.github.io/geog576_lab3/plane-solid.png",
+            width: "32px",
+            height: "32px"
           }
         }, {
           value: "medium_airport",
           symbol: {
             type: "picture-marker",
-            url: "https://steslowj.github.io/geog576_lab3/airplane.png",
-            width: "40px",
-            height: "40px"
+            url: "https://steslowj.github.io/geog576_lab3/plane-solid.png",
+            width: "24px",
+            height: "24px"
           }
         }]
       }
@@ -169,6 +171,28 @@
       });
 
       map.add(worldAirports);
+
+      //adding the const for the feature layer
+      const myAirports = new FeatureLayer({
+        url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/Airports/FeatureServer",
+        outFields: ["AirportCode"]
+      });
+
+      map.add(myAirports);
+
+      //set the point layer's LayerInfo
+      const pointInfos = {
+        layer: myAirports
+      }
+
+      //begin editor constructor
+      const editor = new Editor({
+        view: view,
+        layerInfos: [pointInfos]
+      }); //end editor constructor
+
+      //add the widget to the view
+      view.ui.add(editor, "top-right");
 
     });
 
