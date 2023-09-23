@@ -148,7 +148,14 @@
         labelPlacement: "above-center",
         labelExpressionInfo: {
           expression: "$feature.name"
-        }
+        },
+        where: "type = 'large_airport'"
+      };
+
+      //define a popup for airports
+      const popupAirports = {
+      "title": "<b>ID:</b> {airport_ident}",
+      "content": "<b>Size:</b> {type}<br><b>Name:</b> {name}"
       };
 
       //adding the constructor for the feature layer: world airports
@@ -157,7 +164,8 @@
         definitionExpression: "type = 'large_airport' OR type = 'medium_airport'",
         outFields: ["airport_ident","type","name"],
         renderer: airportRenderer,
-        labelingInfo: [airportLabels]
+        labelingInfo: [airportLabels],
+        popupTemplate: popupAirports
       });
 
       map.add(worldAirports);
