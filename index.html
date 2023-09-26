@@ -107,7 +107,6 @@
         outFields: ["Name","Country"],
         renderer: worldUniversitiesRenderer,
         popupTemplate: popupWorldUniversities,
-        effect: "drop-shadow(1px, 1px, 2px)",
         title: "World Universities"
       });
       
@@ -174,10 +173,7 @@
         renderer: airportRenderer,
         labelingInfo: [worldAirportLabels],
         popupTemplate: popupAirports,
-        title: "World Airports",
-        featureReduction: {
-          type: "selection"
-        }
+        title: "World Airports"
       });
 
       map.add(worldAirports);
@@ -201,7 +197,7 @@
           color: [250,248,240,1],
           font: {
             size: "12px",
-            family: "Josefin Slab Italic",
+            family: "Josefin Slab",
             weight: "normal"
           }
         },
