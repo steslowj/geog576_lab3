@@ -31,9 +31,10 @@
       //adding in the modules for the feature layers
       "esri/layers/FeatureLayer",
       //adding in the module for editing
-      "esri/widgets/Editor"
+      "esri/widgets/Editor",
+      "esri/widgets/Legend"
       ], 
-      function(esriConfig, Map, MapView, BasemapGallery, Expand, Search, Locate, Graphic, GraphicsLayer, FeatureLayer, Editor) { 
+      function(esriConfig, Map, MapView, BasemapGallery, Expand, Search, Locate, Graphic, GraphicsLayer, FeatureLayer, Editor, Legend) { 
       esriConfig.apiKey = "AAPK9c2d1c71e0c54fea8c41854d79e2bb2aRY4BboQbjkrg1gzIR4byHHAPQAnvnqnY0kwBUXQfbQGvJjGbV3it18SqxWbjCtON";
       const map = new Map({
         basemap: "arcgis-newspaper" // Basemap layer service 
@@ -145,7 +146,8 @@
           haloSize: "3px",
           font: {
             size: "12px",
-            family: "Josefin Slab Italic",
+            family: "Josefin Slab",
+            style: "italic",
             weight: "normal"
           }
         },
@@ -172,7 +174,10 @@
         renderer: airportRenderer,
         labelingInfo: [worldAirportLabels],
         popupTemplate: popupAirports,
-        title: "World Airports"
+        title: "World Airports",
+        featureReduction: {
+          type: "selection"
+        }
       });
 
       map.add(worldAirports);
