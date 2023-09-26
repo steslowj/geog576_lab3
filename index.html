@@ -46,19 +46,8 @@
         container: "viewDiv" // Div element
       });
 
-      // Moves the default zoom widget to the rop right corner of the view's container
+      // Moves the default zoom widget to the top right corner of the view's container
       view.ui.move("zoom", "top-right");
-
-      let basemapGallery = new BasemapGallery({
-        view: view
-      });
-
-      basemapGalleryExpand = new Expand({
-        expandIcon: "basemap", //https://developers.arcgis.com/calcite-design-system/icons/
-        view: view,
-        content: basemapGallery
-      });
-      view.ui.add(basemapGalleryExpand, "top-right");
 
       const searchWidget = new Search({
         view: view
@@ -79,12 +68,23 @@
 
       view.ui.add(locateWidget, "top-left");
 
+      let basemapGallery = new BasemapGallery({
+        view: view
+      });
+
+      basemapGalleryExpand = new Expand({
+        expandIcon: "basemap", //https://developers.arcgis.com/calcite-design-system/icons/
+        view: view,
+        content: basemapGallery
+      });
+      view.ui.add(basemapGalleryExpand, "top-left");
+
       //constructor to make renderer for world universities
       const worldUniversitiesRenderer = {
         type: "simple",
         symbol: {
           type: "picture-marker", //autocasts as new PictureMarkerSymbol()
-          url: "https://steslowj.github.io/geog576_lab3/graduation-cap.png",
+          url: "https://steslowj.github.io/geog576_lab3/graduation-green.png",
           width: "20px",
           height: "20px"
         }
@@ -105,7 +105,9 @@
         //adding the popup information to the layer information
         outFields: ["Name","Country"],
         renderer: worldUniversitiesRenderer,
-        popupTemplate: popupWorldUniversities
+        popupTemplate: popupWorldUniversities,
+        effect: "drop-shadow(1px, 1px, 2px)",
+        title: "World Universities"
       });
       
       map.add(worldUniversities);
@@ -119,7 +121,7 @@
           value: "large_airport",
           symbol: {
             type: "picture-marker",
-            url: "https://steslowj.github.io/geog576_lab3/plane-solid-darker.png",
+            url: "https://steslowj.github.io/geog576_lab3/plane-blue-darker.png",
             width: "32px",
             height: "32px"
           }
@@ -127,7 +129,7 @@
           value: "medium_airport",
           symbol: {
             type: "picture-marker",
-            url: "https://steslowj.github.io/geog576_lab3/plane-solid.png",
+            url: "https://steslowj.github.io/geog576_lab3/plane-blue-darker.png",
             width: "20px",
             height: "20px"
           }
@@ -135,15 +137,15 @@
       }
 
       //const to make labels for venice points
-      const airportLabels = {
+      const worldAirportLabels = {
         symbol: {
           type: "text",
-          color: [70,70,70,1],
+          color: [30,30,120,1],
           haloColor: [250,248,240,1],
-          haloSize: "6px",
+          haloSize: "3px",
           font: {
             size: "12px",
-            family: "Oswald",
+            family: "Josefin Slab Italic",
             weight: "normal"
           }
         },
@@ -151,6 +153,8 @@
         labelExpressionInfo: {
           expression: "$feature.name"
         },
+        maxScale: 8,
+        minScale: 2500000,
         where: "type = 'large_airport'"
       };
 
@@ -166,27 +170,49 @@
         definitionExpression: "type = 'large_airport' OR type = 'medium_airport'",
         outFields: ["airport_ident","type","name"],
         renderer: airportRenderer,
-        labelingInfo: [airportLabels],
-        popupTemplate: popupAirports
+        labelingInfo: [worldAirportLabels],
+        popupTemplate: popupAirports,
+        title: "World Airports"
       });
 
       map.add(worldAirports);
 
+      //create renderer for custom myairport layer
       const myAirportRenderer = {
         type: "simple",
         symbol: {
           type: "picture-marker", //autocasts as new PictureMarkerSymbol()
-          url: "https://steslowj.github.io/geog576_lab3/plane-departure.png",
+          url: "https://steslowj.github.io/geog576_lab3/plane-departure-blue.png",
           width: "32px",
           height: "32px"
         }
       };
 
+      //create labels for custom myairport layer
+      const myAirportLabels = {
+        symbol: {
+          type: "text",
+          backgroundColor: [30,30,120,1],
+          color: [250,248,240,1],
+          font: {
+            size: "12px",
+            family: "Josefin Slab Italic",
+            weight: "normal"
+          }
+        },
+        labelPlacement: "above-center",
+        labelExpressionInfo: {
+          expression: "$feature.AirportCode"
+        }
+      };        
+
       //adding the const for the feature layer
       const myAirports = new FeatureLayer({
         url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/Airports/FeatureServer",
         outFields: ["AirportCode"],
-        renderer: myAirportRenderer
+        renderer: myAirportRenderer,
+        labelingInfo: [myAirportLabels],
+        title: "My Airports"
       });
 
       map.add(myAirports);
@@ -194,7 +220,7 @@
       //set the point layer's LayerInfo
       const pointInfos = {
         layer: myAirports
-      }
+      };
 
       //begin editor constructor
       const editor = new Editor({
@@ -204,6 +230,14 @@
 
       //add the widget to the view
       view.ui.add(editor, "top-right");
+
+      //create legend
+      const legend = new Legend({
+        view: view
+      });
+
+      //add the widget to the view
+      view.ui.add(legend, "bottom-right");
 
     });
 
