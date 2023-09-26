@@ -144,17 +144,17 @@
           haloColor: [250,248,240,1],
           haloSize: "3px",
           font: {
-            size: "12px",
-            family: "Josefin Slab",
-            style: "italic",
-            weight: "bold"
+            "size": "14px",
+            "family": "Josefin Slab",
+            "style": "italic",
+            "weight": "bold"
           }
         },
         labelPlacement: "above-center",
         labelExpressionInfo: {
           expression: "$feature.name"
         },
-        maxScale: 8,
+        maxScale: 5,
         minScale: 2500000,
         where: "type = 'large_airport'"
       };
@@ -193,14 +193,15 @@
       const myAirportLabels = {
         symbol: {
           type: "text",
-          backgroundColor: [30,30,120,1],
-          color: [250,248,240,1],
+          color: [12,12,152,1],
+          haloColor: [250,248,240,1],
+          haloSize: "3px",
           font: {
-            "size": "12px",
+            "size": "14px",
             "family": "Josefin Slab",
             "style": "italic",
             "weight": "bold"
-          },
+          }
         },
         labelPlacement: "above-center",
         labelExpressionInfo: {
