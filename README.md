@@ -7,7 +7,7 @@ This project is a web map using ArcGIS Online JavaScript code to create a web-ma
   <li>Basemap & basemap gallery provided by ESRI</li>
   <li>Point features for airports by <a href = "https://www.arcgis.com/home/item.html?id=e90996158f0a464189098881379597a6&view=list&sortOrder=desc&sortField=defaultFSOrder#">ESRI Deutschland</a>.</li>
   <li>Point features for universities by <a href="https://www.arcgis.com/home/item.html?id=d1debc35ad254fe1886a26b7ab42be6b&view=list&sortOrder=desc&sortField=defaultFSOrder#">j_nelson</a>.</li>
-  <li>Editable airpoint layer created by <a href="https://uw-mad.maps.arcgis.com/home/item.html?id=36588545dffc4c4e97dd6ce2c193990a#>me</a>.</li>
+  <li>Editable airpoint layer created by <a href="https://uw-mad.maps.arcgis.com/home/item.html?id=36588545dffc4c4e97dd6ce2c193990a#">me</a>.</li>
 </ul>
 
 ### Project Website
